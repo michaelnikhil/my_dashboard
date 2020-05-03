@@ -7,7 +7,7 @@ import QtQuick.Dialogs 1.1
 import QtQuick.Layouts 1.3
 
 import FileIO 1.0
-
+import DownloadManager 1.0
 
 Window {
     visible: true
@@ -21,9 +21,11 @@ Window {
 
     property var dates_qml: []
     property var values: []
+    property string my_url : "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
+
 
     RowLayout{
-        id:mainLayout
+        id:secondaryLayout
         anchors.fill: parent
         anchors.margins: margin
         spacing: 6
@@ -44,18 +46,22 @@ Window {
                     id:button1
                     width: parent.width
                     text:"Open"
-                    //ToolTip:"load a csv file"
                     anchors.horizontalCenter: parent.horizontalCenter
                     onClicked: fileDialog.open()
                 }
                 Button{
                     id:button2
                     width: parent.width
+                    text:"Download"
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    onClicked: filedownload.doDownload(my_url)
+                }
+                Button{
+                    id:button3
+                    width: parent.width
                     text:"Plot"
-                    //ToolTip:"load a csv file"
                     anchors.horizontalCenter: parent.horizontalCenter
                     onClicked: addSeries()
-
                 }
             }
         }
@@ -155,6 +161,10 @@ Window {
 
     FileIO{
         id:filereader
+    }
+
+    DownloadManager{
+        id:filedownload
     }
 
     MessageDialog {

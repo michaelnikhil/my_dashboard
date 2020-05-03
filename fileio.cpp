@@ -30,7 +30,7 @@ void FileIO::read()
         do {
              line = t.readLine();
              fileContent += line;
-             QTextStream(stdout) << line <<  endl;
+             //QTextStream(stdout) << line <<  endl;
         } while (!line.isNull());
     }
 }
@@ -56,7 +56,7 @@ void FileIO::readCSV()
     for (int i = 3; i < values.size(); i++) {
         day = QDateTime::fromString(values[i],"MM/dd/YY");
         m_dates.append(day);
-        QTextStream(stdout) << values[i] <<  " : " << day.toString() << endl;
+        //QTextStream(stdout) << values[i] <<  " : " << day.toString() << endl;
     }
 
     int p =0;
@@ -119,7 +119,7 @@ void FileIO::getDates()
 
 void FileIO::setLineSeries(QLineSeries *lineSeries)
 {
-    QTextStream(stdout) << "set line series= " <<  endl;
+    //QTextStream(stdout) << "set line series= " <<  endl;
 
     for (int i = 0; i < m_dataCountry.size(); i++) {
         lineSeries->append(m_dates[i].toMSecsSinceEpoch(),m_dataCountry[i]);
@@ -150,8 +150,6 @@ void FileIO::getCountries()
         p++;
     }
     m_countries.removeDuplicates();
-        for (int i = 0; i < m_countries.size(); i++)
-            QTextStream(stdout) << m_countries[i] <<  endl;
     file.close();
 }
 

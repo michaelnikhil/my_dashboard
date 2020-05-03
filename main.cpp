@@ -12,6 +12,7 @@
 #include<QtCharts/QPieSlice>
 
 #include "fileio.h"
+#include "downloadmanager.h"
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -23,8 +24,11 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QApplication app(argc, argv);
+//    DownloadManager manager;
+//    QTimer::singleShot(0, &manager, SLOT(execute()));
 
     qmlRegisterType<FileIO>("FileIO",1,0,"FileIO");
+    qmlRegisterType<DownloadManager>("DownloadManager",1,0,"DownloadManager");
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

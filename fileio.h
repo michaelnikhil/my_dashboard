@@ -27,7 +27,6 @@ public:
     Q_INVOKABLE void getDates(); //FIXME
     Q_INVOKABLE void setLineSeries(QLineSeries* lineSeries);
 
-//    QVariantList Values()       {return m_dataCountry;}
     QUrl source() const;
     QString text() const;
 //    QList<QObject*> dataList {return m_countries2};
@@ -39,6 +38,7 @@ signals:
     void textChanged(QString arg);
     void Error(QString arg);
     void DatesLoaded(const QStringList& dates_cpp);
+
 private:
 //    void getDates(); //read 1st row
     QUrl m_source;

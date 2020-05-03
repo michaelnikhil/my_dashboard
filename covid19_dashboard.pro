@@ -1,4 +1,4 @@
-QT += quick charts core gui
+QT += quick charts core gui network
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -15,7 +15,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     fileio.cpp \
-    customtablemodel.cpp
+    customtablemodel.cpp \
+    downloadmanager.cpp
 
 RESOURCES += qml.qrc
 
@@ -32,6 +33,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     fileio.h \
-    customtablemodel.h
+    customtablemodel.h \
+    downloadmanager.h
 
 DISTFILES +=
