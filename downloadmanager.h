@@ -22,11 +22,11 @@ class DownloadManager: public QObject
 
 public:
     DownloadManager();
-    Q_INVOKABLE void doDownload(const QUrl &url);
-    Q_INVOKABLE QString saveFileName(const QUrl &url);
-    Q_INVOKABLE bool saveToDisk(const QString &filename, QIODevice *data);
 
 public slots:
+    void doDownload(const QUrl &url);
+    QString saveFileName(const QUrl &url);
+    bool saveToDisk(const QString &filename, QIODevice *data);
     void execute();
     void downloadFinished(QNetworkReply *reply);
 };

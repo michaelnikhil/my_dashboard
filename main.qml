@@ -6,9 +6,6 @@ import QtCharts 2.0
 import QtQuick.Dialogs 1.1
 import QtQuick.Layouts 1.3
 
-import FileIO 1.0
-import DownloadManager 1.0
-
 Window {
     visible: true
     title: qsTr("covid19 dashboard")
@@ -25,7 +22,7 @@ Window {
 
 
     RowLayout{
-        id:secondaryLayout
+        id:mainLayout
         anchors.fill: parent
         anchors.margins: margin
         spacing: 6
@@ -54,7 +51,7 @@ Window {
                     width: parent.width
                     text:"Download"
                     anchors.horizontalCenter: parent.horizontalCenter
-                    onClicked: filedownload.doDownload(my_url)
+                    onClicked: downloadmanager.doDownload(my_url)
                 }
                 Button{
                     id:button3
@@ -124,26 +121,18 @@ Window {
     }
 
 
-
     FileDialog {
         id:fileDialog
         title:"Please choose file"
         folder:shortcuts.home
-        onAccepted: {
+        onAccepted:
+            {
             console.log("file name : " + fileDialog.fileUrls)
             var filesource = fileDialog.fileUrls
-            filereader.setSource(filesource.toString())
-            //filereader.readCSV()
-            filereader.getDates()
-            /*onDatesLoaded: {
-                dates_qml = dates_cpp
-            }*/
-            filereader.getCountries()
-            filereader.getDataCountries("Sweden")
-            /*onError: {
-                messageDialog.text="my error"
-                messageDialog.open()
-            }*/
+            fileio.setSource(filesource.toString())
+            fileio.getDates()
+            fileio.getCountries()
+            fileio.getDataCountries("Sweden")
         }
         onRejected: {
             console.log("Cancelled")
@@ -158,15 +147,6 @@ Window {
     }*/
 
 
-
-    FileIO{
-        id:filereader
-    }
-
-    DownloadManager{
-        id:filedownload
-    }
-
     MessageDialog {
         id:messageDialog
         title:"warning"
@@ -177,7 +157,7 @@ Window {
     {
         // Create new LineSeries with 3 Axes (Two-Y-Axis, One-X-Axis)
         var mySeries = mainChart.createSeries(ChartView.SeriesTypeLine, "Line", xTime, yValues);
-        filereader.setLineSeries(mySeries)
+        fileio.setLineSeries(mySeries)
     }
 /*
     Rectangle{

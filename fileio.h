@@ -21,17 +21,17 @@ public:
 
     Q_INVOKABLE void read();
     Q_INVOKABLE void readCSV();
-    Q_INVOKABLE void getCountries(); //read 1st column
-    Q_INVOKABLE void getDataCountries(QString aCountry);    // read rows
     Q_INVOKABLE void write();
-    Q_INVOKABLE void getDates(); //FIXME
-    Q_INVOKABLE void setLineSeries(QLineSeries* lineSeries);
 
     QUrl source() const;
     QString text() const;
-//    QList<QObject*> dataList {return m_countries2};
+
 public slots:
     void setSource(QUrl source);
+    void getDates();
+    void getCountries(); //read 1st column
+    void getDataCountries(QString aCountry);    // read rows
+    void setLineSeries(QLineSeries* lineSeries);
     void setText(QString text);
 signals:
     void sourceChanged(QUrl arg);
@@ -40,7 +40,7 @@ signals:
     void DatesLoaded(const QStringList& dates_cpp);
 
 private:
-//    void getDates(); //read 1st row
+
     QUrl m_source;
     QString m_text;
     QStringList m_countries;
