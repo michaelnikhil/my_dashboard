@@ -11,10 +11,13 @@ Window {
     title: qsTr("covid19 dashboard")
     SystemPalette {id:palette}
     property int margin: 11
-    width: mainLayout.implicitWidth + 2 * margin
-    height: mainLayout.implicitHeight + 2 * margin
-    minimumWidth: mainLayout.Layout.minimumWidth + 2 * margin
-    minimumHeight: mainLayout.Layout.minimumHeight + 2 * margin
+//    width: mainLayout.implicitWidth + 2 * margin
+//    height: mainLayout.implicitHeight + 2 * margin
+//    minimumWidth: mainLayout.Layout.minimumWidth + 2 * margin
+//    minimumHeight: mainLayout.Layout.minimumHeight + 2 * margin
+    width: 700
+    height:600
+
 
     property var dates_qml: []
     property var values: []
@@ -27,14 +30,15 @@ Window {
         anchors.margins: margin
         spacing: 6
 
-        GroupBox {
+        Rectangle {
             id:propertyBox
-            title: "property box"
-            implicitWidth: 120
-            implicitHeight: 400
-            anchors {
-                left: parent.left
-            }
+            Layout.fillWidth: true
+            Layout.minimumWidth: 100
+            Layout.preferredWidth: 120
+            Layout.preferredHeight: 400
+            //anchors {
+            //    left: parent.left
+            //}
             ColumnLayout{
                 id:buttonLayout
                 anchors.fill: parent
@@ -42,7 +46,7 @@ Window {
                 Button{
                     id:button1
                     width: parent.width
-                    text:"Open"
+                    text:"Plot file"
                     anchors.horizontalCenter: parent.horizontalCenter
                     onClicked: fileDialog.open()
                 }
@@ -58,19 +62,37 @@ Window {
                     width: parent.width
                     text:"Plot"
                     anchors.horizontalCenter: parent.horizontalCenter
-                    onClicked: addSeries()
+                    onClicked:addSeries()
                 }
             }
         }
 
-        GroupBox {
+        Rectangle {
+            id:listBox
+            Layout.fillWidth: true
+            Layout.minimumWidth: 100
+            Layout.preferredWidth: 100
+            Layout.preferredHeight: 400
+            //anchors.fill: parent
+
+
+             ListView {
+                    width:100
+                    height:80
+                    id: countryListView
+                    model: ModelCountries {}
+                    //model:countrylist
+                    delegate: DelegateCountry {}
+                    focus: true
+                }
+        }
+        Rectangle {
             id:displayBox
-            title: "display box"
-            implicitWidth: 400
-            implicitHeight: 400
-            anchors {
-                right: parent.right
-            }
+            Layout.fillWidth: true
+            Layout.minimumWidth: 100
+            Layout.preferredWidth: 500
+            Layout.preferredHeight: 400
+
             ChartView {
                 id:mainChart
                 title: "line"
@@ -78,11 +100,6 @@ Window {
                 antialiasing: true
                 theme: ChartView.ChartThemeDark
 
-               /* ValueAxis {
-                    id:xTime
-                    min:0
-                    max:4
-                }*/
                 DateTimeAxis {
                     id:xTime
                     format: "dd MM yyyy"
@@ -96,26 +113,6 @@ Window {
                     min:0
                     max:200
                 }
-
-                /*
-                CategoryAxis{
-                    id:yDescription
-                }
-                CategoryAxis {
-                    id:xTime
-                }
-                CategoryAxis {
-                    id:yValues
-                }
-*/
-
-/*                LineSeries {
-                    name: "LineSeries"
-                    XYPoint {x:0 ; y:0 }
-                    XYPoint {x:1 ; y:1 }
-                    XYPoint {x:2 ; y:4 }
-                    XYPoint {x:3 ; y:9 }
-                }*/
             }
         }
     }
@@ -139,13 +136,6 @@ Window {
             Qt.quit()
         }
     }
-    // when new data is sent from C++, parse the JSON and use as chartData in QML
-  /*  Connections {
-      target: FileIO
-      // the dataLoaded signal provides a jsonDataString parameter
-      onDatesLoaded: dates_qml = dates_cpp
-    }*/
-
 
     MessageDialog {
         id:messageDialog
@@ -153,58 +143,23 @@ Window {
         icon: StandardIcon.Warning
     }
 
+    Connections{
+        id:checkDataAndPlot
+        target: fileio
+        onDatesLoaded: {
+            console.log("*** dates loaded ***")
+            //addSeries()
+        }
+    }
+
     function addSeries()
     {
-        // Create new LineSeries with 3 Axes (Two-Y-Axis, One-X-Axis)
+        // Create new LineSeries
         var mySeries = mainChart.createSeries(ChartView.SeriesTypeLine, "Line", xTime, yValues);
         fileio.setLineSeries(mySeries)
-    }
-/*
-    Rectangle{
-        id:bottomBar
-        anchors {
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-        }
-        height:buttonRow.height * 1.2
-        color: Qt.darker(palette.window,1.5)
-        border.color:Qt.darker(palette.windpw,1.5)
-
-        Row{
-            id:buttonRow
-            spacing: 6
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.left:parent.left
-            anchors.leftMargin: 12
-            height: implicitHeight
-            width: parent.width
-            Button{
-                id:button1
-                text:"Open file"
-                //ToolTip:"load a csv file"
-                anchors.verticalCenter: parent.verticalCenter
-                onClicked: fileDialog.open()
-            }
-            Button{
-                id:button2
-                text:"Open file"
-                //ToolTip:"load a csv file"
-                anchors.verticalCenter: parent.verticalCenter
-                onClicked: fileDialog.open()
-            }
-
-        }*/
-
-    }
-/*    ListView {
-        id: countryListView
-        anchors.fill: parent
-        model: ModelCountries {}
-        delegate: DelegateCountry {}
-        focus: true
-
+        console.log("series added")
     }
 
-*/
+}
+
 

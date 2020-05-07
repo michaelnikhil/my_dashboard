@@ -25,6 +25,8 @@ public:
 
     QUrl source() const;
     QString text() const;
+    QStringList m_countries;
+    QList<QObject*> m_countries2;
 
 public slots:
     void setSource(QUrl source);
@@ -36,17 +38,16 @@ public slots:
 signals:
     void sourceChanged(QUrl arg);
     void textChanged(QString arg);
-    void Error(QString arg);
-    void DatesLoaded(const QStringList& dates_cpp);
+    void error(QString arg);
+    void datesLoaded();
 
 private:
 
     QUrl m_source;
     QString m_text;
-    QStringList m_countries;
-    QList<QObject*> m_countries2;
     QVector<QDateTime> m_dates;
     QVector<double> m_dataCountry;
+
 
 //    QVariantList m_dataCountry;
 };

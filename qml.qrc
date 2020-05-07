@@ -4,5 +4,6 @@
         <file>ModelCountries.qml</file>
         <file>DelegateCountry.qml</file>
         <file>LinePlots.qml</file>
+        <file>ValueSource.qml</file>
     </qresource>
 </RCC>

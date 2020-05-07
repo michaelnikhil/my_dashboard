@@ -20,7 +20,7 @@ void FileIO::read()
     if(!file.exists()) {
         qWarning() << "Does not exits: " << m_source.toLocalFile();
         m_text = "Does not exist";
-        emit Error(m_text);
+        emit error(m_text);
         return;
     }
     if(file.open(QIODevice::ReadOnly)) {
@@ -111,10 +111,12 @@ void FileIO::getDates()
         m_dates.append(day);
         string_dates.append(day.toString());
     }
-
+    if (string_dates.size() > 0) {
+        emit datesLoaded();
+    }
     file.close();
 
-    DatesLoaded(string_dates);
+
 }
 
 void FileIO::setLineSeries(QLineSeries *lineSeries)
@@ -124,7 +126,6 @@ void FileIO::setLineSeries(QLineSeries *lineSeries)
     for (int i = 0; i < m_dataCountry.size(); i++) {
         lineSeries->append(m_dates[i].toMSecsSinceEpoch(),m_dataCountry[i]);
     }
-
 }
 
 void FileIO::getCountries()
@@ -180,8 +181,7 @@ void FileIO::getDataCountries(QString aCountry)
         }
         p++;
     }
-    QTextStream(stdout) << "p = " << p <<  endl;
-    QTextStream(stdout) << "n values = " << m_dataCountry.size() <<  endl;
+
 /*    for (int i = 0; i < m_dataCountry.size(); i++)
         QTextStream(stdout) << m_dataCountry[i] <<  endl;*/
 
