@@ -19,7 +19,7 @@ Window {
     height:600
 
     property string my_url : "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
-
+    property string my_country: "France"
     //load data from c++ on startup
     Component.onCompleted: downloadmanager.doDownload(my_url)
 
@@ -32,7 +32,6 @@ Window {
             //fileio.setSource(filesource.toString())
             fileio.getDates()
             fileio.getCountries()
-            fileio.getDataCountries("Sweden")
         }
     }
 
@@ -40,8 +39,8 @@ Window {
         target: fileio
         onDatesLoaded: {
             console.log("*** dates loaded ***")
-            messageBox.append(Qt.formatTime(new Date(), "hh:mm") +" dates loaded")
-            addSeries()
+            messageBox.append(Qt.formatTime(new Date(), "hh:mm") +" dates loaded : click on plot")
+            button3.visible=true
         }
     }
 
@@ -81,35 +80,34 @@ Window {
                     anchors.horizontalCenter: parent.horizontalCenter
                     onClicked: downloadmanager.doDownload(my_url)
                 }
-               /* Button{
+                Button{
                     id:button3
+                    visible: false
+                    highlighted: true
                     width: parent.width
                     text:"Plot"
                     anchors.horizontalCenter: parent.horizontalCenter
                     onClicked:addSeries()
-                }*/
+                }
+
+                ComboBox {
+                    id:combobox
+                    implicitWidth: propertyBox.width
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    editable: true
+                    model: fileio.countries
+                    onAccepted: {
+                        my_country = combobox.currentText
+                        console.log(my_country)
+                        messageBox.append(Qt.formatTime(new Date(), "hh:mm") + " country chosen: " + my_country)
+                        fileio.getDataCountries(my_country)
+                        console.log(xTime.max)
+                        addSeries()
+                    }
+                }
             }
         }
 
-        Rectangle {
-            id:listBox
-            Layout.fillWidth: true
-            Layout.minimumWidth: 100
-            Layout.preferredWidth: 100
-            Layout.preferredHeight: 400
-            //anchors.fill: parent
-
-
-             ListView {
-                    width:100
-                    height:80
-                    id: countryListView
-                    model: ModelCountries {}
-                    //model:countrylist
-                    delegate: DelegateCountry {}
-                    focus: true
-                }
-        }
         Rectangle {
             id:displayBox
             Layout.fillWidth: true
@@ -128,7 +126,7 @@ Window {
                     format: "dd MM yyyy"
                     tickCount: 5
                     min: new Date(2020,1,20)
-                    max: new Date(2020,4,20)
+                    max: new Date(2020,4,21)
                 }
 
                 ValueAxis {
@@ -136,60 +134,36 @@ Window {
                     min:0
                     max:400
                 }
-
-               /* LineSeries {
-                    id:lineSeries1
-                    axisX: xTime
-                    axisY:yValues
-                }*/
             }
 
-   /*         Connections{
-               target: fileio
-                onDatesLoaded: {
-                    console.log("*** dates loaded ***")
-                    addSeries()
-                 //     mainChart.removeAllSeries()
-                 //   mainChart.title = "my title"
-                 //   var mySeries = mainChart.createSeries(ChartView.SeriesTypeLine, "Line", xTime, yValues);
-                 //   fileio.setLineSeries(mySeries)
-                }
-            }*/
         }
+}
 
-
-        RowLayout{
+        Row {
+            id:lowerRow
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.margins: margin
             spacing: 6
 
-            Rectangle {
-                anchors.fill: flickable
-            }
-
-            Flickable {
-                id:flickable
-
+            ScrollView {
+                id:view
                 TextArea {
                     id:messageBox
-                    width:200
-                    height:40
-                    //contentWidth: width
-                    //contentHeight: TextArea.implicitHeight
+                    //width:200
+                    //height:40
                     readOnly: true
                     //wrapMode: Text.WordWrap
-                    //text: "my_Test"
                     background: Rectangle {
-                        color: "#FFFFFF"
+                        color: "#DDBEBF"
                         border.width: 1
                         border.color: Control.activeFocus ? "5CAA15" : "#BDBEBF"
                     }
+
                 }
-                ScrollBar.vertical: ScrollBar {}
+
             }
         }
-    }
 
 
     FileDialog {
@@ -204,7 +178,6 @@ Window {
 //            fileio.setSource("file:///home/michael/Qt/build-covid19_dashboard-Desktop-Profile/time_series_covid19_deaths_global.csv.0")
             fileio.getDates()
             fileio.getCountries()
-            fileio.getDataCountries("Sweden")
         }
         onRejected: {
             console.log("Cancelled")
@@ -223,11 +196,20 @@ Window {
     {
         // Create new LineSeries
         mainChart.removeAllSeries()
+
         var mySeries = mainChart.createSeries(ChartView.SeriesTypeLine, "Line", xTime, yValues);
+        mainChart.axisX(xTime)
+        mainChart.axisY(yValues)
         fileio.setLineSeries(mySeries)
         console.log("series added")
     }
+    function removeSeries()
+    {
+        mainChart.removeAllSeries()
+        mainChart.axisX(xTime)
+        mainChart.axisY(yValues)
 
+    }
 }
 
 

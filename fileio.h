@@ -18,6 +18,7 @@ class FileIO : public QObject
     Q_DISABLE_COPY(FileIO)
     Q_PROPERTY(QUrl source READ source WRITE setSource NOTIFY sourceChanged)
     Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
+    Q_PROPERTY(QStringList countries MEMBER m_countries NOTIFY countriesLoaded  )
 public:
     FileIO(QObject *parent = 0);
     ~FileIO();
@@ -43,6 +44,7 @@ signals:
     void textChanged(QString arg);
     void error(QString arg);
     void datesLoaded();
+    void countriesLoaded();
 
 private:
 

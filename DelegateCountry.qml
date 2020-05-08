@@ -10,7 +10,8 @@ Component {
         width:180
         height: 40
         Column{
-            Text {text: 'Name ' + name}
+//            Text {text: 'Name ' + name}
+              Text {text: modelData}
         }
     }
 }
