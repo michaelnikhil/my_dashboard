@@ -6,8 +6,11 @@
 #include<QDateTimeAxis>
 #include<QCategoryAxis>
 #include <QtCharts/QLineSeries>
+#include <QString>
 
 QT_CHARTS_USE_NAMESPACE
+
+//static QString DataDirName="EnRSim-Data";
 
 class FileIO : public QObject
 {

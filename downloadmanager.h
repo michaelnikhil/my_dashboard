@@ -29,6 +29,8 @@ public slots:
     bool saveToDisk(const QString &filename, QIODevice *data);
     void execute();
     void downloadFinished(QNetworkReply *reply);
+signals:
+    void fileDownloaded();
 };
 
 #endif // DOWNLOADMANAGER_H
