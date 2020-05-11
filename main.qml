@@ -66,7 +66,7 @@ Window {
                 Button{
                     id:button1
                     width: parent.width
-                    text:"Plot file"
+                    text:"Load file"
                     anchors.horizontalCenter: parent.horizontalCenter
                     onClicked: {
                         fileDialog.open()
@@ -77,9 +77,9 @@ Window {
                 Button{
                     id:button2
                     width: parent.width
-                    text:"Download"
+                    text:"Reset plot"
                     anchors.horizontalCenter: parent.horizontalCenter
-                    onClicked: downloadmanager.doDownload(my_url)
+                    onClicked: removeSeries()
                 }
                 Button{
                     id:button3
@@ -127,16 +127,15 @@ Window {
                     format: "dd MM yyyy"
                     tickCount: 5
                     min: new Date(2020,1,20)
-                    max: new Date(2020,4,21)
+                    max: fileio.dMax
                 }
 
                 ValueAxis {
                     id:yValues
                     min:0
-                    max:400
+                    max:fileio.yMax
                 }
             }
-
         }
 }
 

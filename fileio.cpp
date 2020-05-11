@@ -112,7 +112,9 @@ void FileIO::getDates()
         string_dates.append(day.toString());
     }
     if (string_dates.size() > 0) {
+        m_dMax = day;
         emit datesLoaded();
+        emit dMaxChanged();
     }
     file.close();
 
@@ -182,6 +184,10 @@ void FileIO::getDataCountries(QString aCountry)
         if (values[1] == aCountry) {
             for (int j = 4; j < values.size(); j++) {
                 dataCountry.append(values[j].toDouble());
+                if (values[j].toDouble() > m_yMax) {
+                    m_yMax = values[j].toDouble();
+                    emit yMaxChanged();
+                }
             }
             break;
         }
