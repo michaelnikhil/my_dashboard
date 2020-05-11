@@ -121,12 +121,10 @@ void FileIO::getDates()
 
 void FileIO::setLineSeries(QLineSeries *lineSeries)
 {
-    QTextStream(stdout) << "set line series " <<  endl;
 
     for (int i = 0; i < m_dataCountry.size(); i++) {
         lineSeries->append(m_dates[i].toMSecsSinceEpoch(),m_dataCountry[i]);
     }
-    QTextStream(stdout) << m_dataCountry[0] <<  endl;
 }
 
 void FileIO::getCountries()
@@ -172,6 +170,7 @@ void FileIO::getDataCountries(QString aCountry)
         return;
     }
 
+    QVector<double> dataCountry;
     QTextStream stream(&file);
     QStringList values;
     int p =0;
@@ -182,15 +181,17 @@ void FileIO::getDataCountries(QString aCountry)
         values = line.split(",");
         if (values[1] == aCountry) {
             for (int j = 4; j < values.size(); j++) {
-                m_dataCountry.append(values[j].toDouble());
+                dataCountry.append(values[j].toDouble());
             }
             break;
         }
         p++;
     }
 
+//    QTextStream(stdout) << aCountry << " number of data = " <<  dataCountry.size() << endl;
 /*    for (int i = 0; i < m_dataCountry.size(); i++)
         QTextStream(stdout) << m_dataCountry[i] <<  endl;*/
+    m_dataCountry = dataCountry;
 
     file.close();
 }

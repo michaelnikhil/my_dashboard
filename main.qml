@@ -70,7 +70,8 @@ Window {
                     anchors.horizontalCenter: parent.horizontalCenter
                     onClicked: {
                         fileDialog.open()
-                        messageBox.append(("*** another line ***"))
+                        messageBox.append(Qt.formatTime(new Date(), "hh:mm") + " file loaded")
+
                     }
                 }
                 Button{
@@ -195,11 +196,11 @@ Window {
     function addSeries()
     {
         // Create new LineSeries
-        mainChart.removeAllSeries()
+        //mainChart.removeAllSeries()
 
-        var mySeries = mainChart.createSeries(ChartView.SeriesTypeLine, "Line", xTime, yValues);
-        mainChart.axisX(xTime)
-        mainChart.axisY(yValues)
+        var mySeries = mainChart.createSeries(ChartView.SeriesTypeLine, my_country, xTime, yValues);
+        //mainChart.axisX(xTime)
+        //mainChart.axisY(yValues)
         fileio.setLineSeries(mySeries)
         console.log("series added")
     }
