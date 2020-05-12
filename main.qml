@@ -137,34 +137,34 @@ Window {
                 }
             }
         }
-}
+    }
 
-        Row {
-            id:lowerRow
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            anchors.margins: margin
-            spacing: 6
+    Row {
+        id:lowerRow
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.margins: margin
+        Layout.preferredHeight: 50
+        Layout.fillWidth: true
+        spacing: 6
 
-            ScrollView {
-                id:view
-                TextArea {
-                    id:messageBox
-                    //width:200
-                    //height:40
-                    readOnly: true
-                    //wrapMode: Text.WordWrap
-                    background: Rectangle {
-                        color: "#DDBEBF"
-                        border.width: 1
-                        border.color: Control.activeFocus ? "5CAA15" : "#BDBEBF"
-                    }
-
+        ScrollView {
+            id:view
+            clip: true
+            TextArea {
+                id:messageBox
+                //width:200
+                height:view.viewport.height
+                readOnly: true
+                //wrapMode: Text.WordWrap
+                background: Rectangle {
+                    color: "#DDBEBF"
+                    border.width: 1
+                    border.color: Control.activeFocus ? "5CAA15" : "#BDBEBF"
                 }
-
             }
         }
-
+    }
 
     FileDialog {
         id:fileDialog
