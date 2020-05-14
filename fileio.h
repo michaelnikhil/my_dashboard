@@ -62,6 +62,7 @@ private:
     QVector<double> m_dataCountry;
     double m_yMax=0;
     QDateTime m_dMax = QDateTime::fromString("2020/1/1", "yyyy/M/d");
+
 };
 
 #endif // FILEIO_H

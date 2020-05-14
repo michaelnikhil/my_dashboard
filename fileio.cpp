@@ -230,8 +230,8 @@ void FileIO::setSource(QUrl source)
 {
     if (m_source == source)
         return;
-
-    m_source = source;
+    m_source = source ;
+    QTextStream(stdout) << "source print out : " << m_source.toLocalFile() <<  endl;
     emit sourceChanged(source);
 }
 

@@ -27,9 +27,10 @@ Window {
         target: downloadmanager
         onFileDownloaded: {
             console.log("*** file downloaded ***")
+            console.log("file:///" + appPath + "/" + downloadmanager.saveFileName(my_url))
             messageBox.append(Qt.formatTime(new Date(), "hh:mm") + " file downloaded")
-            fileio.setSource("file:///home/michael/Qt/build-covid19_dashboard-Desktop-Profile/time_series_covid19_deaths_global.csv")
-            //fileio.setSource(filesource.toString())
+            messageBox.append(Qt.formatTime(new Date(), "hh:mm") +  appPath)
+            fileio.setSource("file://"+appPath + "/" + downloadmanager.saveFileName(my_url))
             fileio.getDates()
             fileio.getCountries()
         }
@@ -154,7 +155,7 @@ Window {
             TextArea {
                 id:messageBox
                 //width:200
-                height:view.viewport.height
+                //height:view.viewport.height
                 readOnly: true
                 //wrapMode: Text.WordWrap
                 background: Rectangle {

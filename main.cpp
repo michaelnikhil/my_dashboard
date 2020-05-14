@@ -26,7 +26,8 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
-
+    // get the applications dir path and expose it to QML
+    QUrl appPath(QString("%1").arg(app.applicationDirPath()));
     FileIO* fileio = new FileIO();
     DownloadManager* downloadmanager = new DownloadManager();
 
@@ -34,7 +35,7 @@ int main(int argc, char *argv[])
     QQmlContext * context = engine.rootContext();
     context->setContextProperty("fileio",fileio);
     context->setContextProperty("downloadmanager",downloadmanager);
-    //context->setContextProperty("yMax_cpp",fileio->m_yMax);
+    context->setContextProperty("appPath", appPath);
 
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

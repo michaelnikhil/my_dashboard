@@ -15,7 +15,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     fileio.cpp \
-    customtablemodel.cpp \
     downloadmanager.cpp
 
 RESOURCES += qml.qrc
@@ -33,7 +32,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     fileio.h \
-    customtablemodel.h \
     downloadmanager.h
 
 DISTFILES +=
