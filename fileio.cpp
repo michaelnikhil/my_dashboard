@@ -172,7 +172,7 @@ void FileIO::getDataCountries(QString aCountry)
         return;
     }
 
-    QVector<double> dataCountry;
+    QVector<double> dataCountry(m_dates.size());
     QTextStream stream(&file);
     QStringList values;
     int p =0;
@@ -183,13 +183,12 @@ void FileIO::getDataCountries(QString aCountry)
         values = line.split(",");
         if (values[1] == aCountry) {
             for (int j = 4; j < values.size(); j++) {
-                dataCountry.append(values[j].toDouble());
+                dataCountry[j-4] += values[j].toDouble();
                 if (values[j].toDouble() > m_yMax) {
                     m_yMax = values[j].toDouble();
                     emit yMaxChanged();
                 }
             }
-            break;
         }
         p++;
     }
