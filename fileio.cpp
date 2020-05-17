@@ -129,37 +129,37 @@ void FileIO::setLineSeries(QLineSeries *lineSeries)
     }
 }
 
-void FileIO::getCountries()
-{
-    if(m_source.isEmpty()) {
-        return;
-    }
-    QFile file(m_source.toLocalFile());
+//void FileIO::getCountries()
+//{
+//    if(m_source.isEmpty()) {
+//        return;
+//    }
+//    QFile file(m_source.toLocalFile());
 
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        return;
-    }
+//    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+//        return;
+//    }
 
-    QTextStream stream(&file);
-    QStringList values;
-    int p =0;
-    while (!stream.atEnd()) {
-        QString line = stream.readLine();
-        if (line.startsWith("#") || line.startsWith(":") ) {
-            continue; }
-        values = line.split(",");
-        m_countries.append(values[1]);
-        p++;
-    }
-    m_countries.removeDuplicates();
-   /* for (int i = 0; i < m_countries.size(); ++i) {
-        QTextStream(stdout) << m_countries[i] <<  endl;
-    }*/
-    if (m_countries.size() > 0) {
-        emit countriesLoaded();
-    }
-    file.close();
-}
+//    QTextStream stream(&file);
+//    QStringList values;
+//    int p =0;
+//    while (!stream.atEnd()) {
+//        QString line = stream.readLine();
+//        if (line.startsWith("#") || line.startsWith(":") ) {
+//            continue; }
+//        values = line.split(",");
+//        m_countries.append(values[1]);
+//        p++;
+//    }
+//    m_countries.removeDuplicates();
+//   /* for (int i = 0; i < m_countries.size(); ++i) {
+//        QTextStream(stdout) << m_countries[i] <<  endl;
+//    }*/
+//    if (m_countries.size() > 0) {
+//        emit countriesLoaded();
+//    }
+//    file.close();
+//}
 
 void FileIO::getDataCountries(QString aCountry)
 {
@@ -193,10 +193,60 @@ void FileIO::getDataCountries(QString aCountry)
         p++;
     }
 
-//    QTextStream(stdout) << aCountry << " number of data = " <<  dataCountry.size() << endl;
-/*    for (int i = 0; i < m_dataCountry.size(); i++)
-        QTextStream(stdout) << m_dataCountry[i] <<  endl;*/
     m_dataCountry = dataCountry;
+
+    file.close();
+}
+
+void FileIO::getDataCountriesPresent()
+{
+    if(m_source.isEmpty()) {
+        return;
+    }
+    QFile file(m_source.toLocalFile());
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return;
+    }
+
+    QVector<int> dataCountriesPresent_tmp;
+    QStringList countries;
+    QTextStream stream(&file);
+    QStringList values;
+    QString  country;
+    QString country_old = "";
+
+    //1st loop, keep country duplicates
+    int p =0;
+    while (!stream.atEnd()) {
+        QString line = stream.readLine();
+        if (line.startsWith("#") || line.startsWith(":")  ) {
+            continue; }
+        values = line.split(",");
+        countries.append(values[1]);
+        dataCountriesPresent_tmp.append(values.last().toDouble());
+        p++;
+    }
+
+    m_countries = countries;
+
+
+    //2nd loop, remove country duplicates and sum data
+    m_countries.removeDuplicates();
+    QVector<int> dataCountriesPresent(m_countries.size());
+    for (int i=0; i<m_countries.size();i++) {
+        for (int j=0; j<countries.size();j++) {
+            if (countries[j] == m_countries[i])
+                dataCountriesPresent[i] += dataCountriesPresent_tmp[j];
+        }
+//        QTextStream(stdout) << m_countries[i] << " values : " << dataCountriesPresent[i]
+//                                        <<  endl;
+    }
+
+    m_dataCountriesPresent = dataCountriesPresent;
+
+    if (m_countries.size() > 0) {
+        emit countriesLoaded();}
 
     file.close();
 }

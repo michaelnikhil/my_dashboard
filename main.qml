@@ -32,7 +32,7 @@ Window {
             messageBox.append(Qt.formatTime(new Date(), "hh:mm") +  appPath)
             fileio.setSource("file://"+appPath + "/" + downloadmanager.saveFileName(my_url))
             fileio.getDates()
-            fileio.getCountries()
+            fileio.getDataCountriesPresent()
         }
     }
 

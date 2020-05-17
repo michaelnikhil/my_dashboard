@@ -40,8 +40,8 @@ public:
 public slots:
     void setSource(QUrl source);
     void getDates();
-    void getCountries(); //read 1st column
     void getDataCountries(QString aCountry);    // read rows
+    void getDataCountriesPresent(); //read last column = present day
     void setLineSeries(QLineSeries* lineSeries);
     void setText(QString text);
 
@@ -60,6 +60,7 @@ private:
     QString m_text;
     QVector<QDateTime> m_dates;
     QVector<double> m_dataCountry;
+    QVector<int> m_dataCountriesPresent;
     double m_yMax=0;
     QDateTime m_dMax = QDateTime::fromString("2020/1/1", "yyyy/M/d");
 
