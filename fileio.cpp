@@ -1,6 +1,7 @@
 #include "fileio.h"
 #include <QtCharts/QChartView>
 #include<list>
+using namespace std;
 
 FileIO::FileIO(QObject *parent)
     : QObject(parent)
@@ -129,38 +130,6 @@ void FileIO::setLineSeries(QLineSeries *lineSeries)
     }
 }
 
-//void FileIO::getCountries()
-//{
-//    if(m_source.isEmpty()) {
-//        return;
-//    }
-//    QFile file(m_source.toLocalFile());
-
-//    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-//        return;
-//    }
-
-//    QTextStream stream(&file);
-//    QStringList values;
-//    int p =0;
-//    while (!stream.atEnd()) {
-//        QString line = stream.readLine();
-//        if (line.startsWith("#") || line.startsWith(":") ) {
-//            continue; }
-//        values = line.split(",");
-//        m_countries.append(values[1]);
-//        p++;
-//    }
-//    m_countries.removeDuplicates();
-//   /* for (int i = 0; i < m_countries.size(); ++i) {
-//        QTextStream(stdout) << m_countries[i] <<  endl;
-//    }*/
-//    if (m_countries.size() > 0) {
-//        emit countriesLoaded();
-//    }
-//    file.close();
-//}
-
 void FileIO::getDataCountries(QString aCountry)
 {
     if(m_source.isEmpty()) {
@@ -248,6 +217,13 @@ void FileIO::getDataCountriesPresent()
     if (m_countries.size() > 0) {
         emit countriesLoaded();}
 
+    //sort list
+    QVector<int> sortedIndex = sortArr(m_dataCountriesPresent,m_dataCountriesPresent.size());
+    for (int i=0; i<m_countries.size();i++) {
+        QTextStream(stdout) << m_countries[sortedIndex[i]] << " values : "
+                                                           << dataCountriesPresent[sortedIndex[i]]
+                                                           << endl;
+    }
     file.close();
 }
 
@@ -273,6 +249,31 @@ QUrl FileIO::source() const
 QString FileIO::text() const
 {
     return m_text;
+}
+
+QVector<int> FileIO::sortArr(QVector<int> arr, int n)
+{
+    // reference
+    //https://www.geeksforgeeks.org/keep-track-of-previous-indexes-after-sorting-a-vector-in-c-stl/
+    QVector<int> sortedIndex(arr.size());
+    // Vector to store element
+    // with respective present index
+    vector<pair<int, int> > vp;
+
+    // Inserting element in pair vector
+    // to keep track of previous indexes
+    for (int i = 0; i < n; ++i) {
+        vp.push_back(make_pair(arr[i], i));
+    }
+
+    // Sorting pair vector
+    sort(vp.begin(), vp.end());
+
+    for (int i = 0; i < vp.size(); i++) {
+        sortedIndex[i] = vp[i].second;
+    }
+    std::reverse(std::begin(sortedIndex), std::end(sortedIndex));
+    return sortedIndex;
 }
 
 void FileIO::setSource(QUrl source)

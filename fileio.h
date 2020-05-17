@@ -36,8 +36,9 @@ public:
     QList<QObject*> m_countries2;
     double get_yMax() const {return m_yMax;}
     QDateTime get_dMax() const {return m_dMax;}
+    QVector<int> sortArr(QVector<int> arr, int n);
 
-public slots:
+    public slots:
     void setSource(QUrl source);
     void getDates();
     void getDataCountries(QString aCountry);    // read rows
