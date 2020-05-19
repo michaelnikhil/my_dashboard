@@ -196,13 +196,12 @@ void FileIO::getDataCountriesPresent()
         dataCountriesPresent_tmp.append(values.last().toDouble());
         p++;
     }
-
     m_countries = countries;
-
 
     //2nd loop, remove country duplicates and sum data
     m_countries.removeDuplicates();
     QVector<int> dataCountriesPresent(m_countries.size());
+
     for (int i=0; i<m_countries.size();i++) {
         for (int j=0; j<countries.size();j++) {
             if (countries[j] == m_countries[i])
@@ -219,11 +218,16 @@ void FileIO::getDataCountriesPresent()
 
     //sort list
     QVector<int> sortedIndex = sortArr(m_dataCountriesPresent,m_dataCountriesPresent.size());
+
+    QVector<QString> countries_ordered(m_countries.size());
+    QVector<int> dataCountriesPresent_ordered(m_countries.size());
+
     for (int i=0; i<m_countries.size();i++) {
-        QTextStream(stdout) << m_countries[sortedIndex[i]] << " values : "
-                                                           << dataCountriesPresent[sortedIndex[i]]
-                                                           << endl;
+        countries_ordered[i] = m_countries[sortedIndex[i]];
+        dataCountriesPresent_ordered[i] = dataCountriesPresent[sortedIndex[i]];
     }
+    m_countries_ordered=countries_ordered;
+    m_dataCountriesPresent_ordered=dataCountriesPresent;
     file.close();
 }
 

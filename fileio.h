@@ -36,6 +36,7 @@ public:
     QList<QObject*> m_countries2;
     double get_yMax() const {return m_yMax;}
     QDateTime get_dMax() const {return m_dMax;}
+    QDateTime m_dMax = QDateTime::fromString("2020/1/1", "yyyy/M/d");
     QVector<int> sortArr(QVector<int> arr, int n);
 
     public slots:
@@ -63,8 +64,8 @@ private:
     QVector<double> m_dataCountry;
     QVector<int> m_dataCountriesPresent;
     double m_yMax=0;
-    QDateTime m_dMax = QDateTime::fromString("2020/1/1", "yyyy/M/d");
-
+    QVector<QString> m_countries_ordered;
+    QVector<int> m_dataCountriesPresent_ordered;
 };
 
 #endif // FILEIO_H

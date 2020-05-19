@@ -5,11 +5,11 @@ ListModel {
 
     ListElement{
         name:"France"
-        //values:3000
+        values:3000
     }
     ListElement{
         name:"Sweden"
-        //values:100
+        values:100
     }
 
 }
