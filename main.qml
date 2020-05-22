@@ -1,10 +1,11 @@
-import QtQuick 2.0
+import QtQuick 2.12
 import QtQuick.Controls 2.2
 import QtQuick.Window 2.1
 import "."
 import QtCharts 2.0
 import QtQuick.Dialogs 1.1
 import QtQuick.Layouts 1.3
+import Qt.labs.qmlmodels 1.0
 
 Window {
     visible: true
@@ -34,6 +35,7 @@ Window {
             fileio.setSource("file://"+appPath + "/" + downloadmanager.saveFileName(my_url))
             fileio.getDates()
             fileio.getDataCountriesPresent()
+            addBarSeries()
         }
     }
 
@@ -144,13 +146,45 @@ Window {
                     Layout.fillHeight: true
                     border.width: 2
 
-                    Text {
-                        text: 'I am the very model of a modern major general!'
+                    ChartView{
+                        id: rankChart
+//                        Layout.fillWidth: true
+//                        Layout.fillHeight: true
+//                        legend.alignment: Qt.AlignBottom
+                        anchors.fill: parent
+                        antialiasing: true
+//                         Component.onCompleted: {
+//                             addBarSeries()
+//                         }
 
-                        // color can be set on the entire element with this property
-                        color: "black"
+                        BarCategoryAxis{
+                            id: xCountry
+                        }
+                        ValueAxis{
+                            id: yValuesLast
+                            min:0
+                            max:80000
+                        }
 
+
+//                        BarSeries {
+//                        id: myBarSeries
+//                        axisX: xCountry
+//                        axisY: yValuesLast
+//                        BarSet {
+//                            id: rainfallSet
+//                            label: "Rainfall"
+//                        }
+//                    }
+//                        BarSeries {
+//                            id: mySeries
+//                            axisX: BarCategoryAxis { categories: ["2007", "2008", "2009", "2010", "2011", "2012" ] }
+//                            BarSet { label: "Bob"; values: [2, 2, 3, 4, 5, 6] }
+//                            BarSet { label: "Susan"; values: [5, 1, 2, 4, 1, 7] }
+//                            BarSet { label: "James"; values: [3, 5, 8, 13, 5, 8] }
+//                        }
                     }
+
                 }
             }
         }
@@ -214,7 +248,6 @@ Window {
         icon: StandardIcon.Warning
     }
 
-
     function addSeries()
     {
         // Create new LineSeries
@@ -226,6 +259,30 @@ Window {
         fileio.setLineSeries(mySeries)
         console.log("series added")
     }
+
+    function addBarSeries()
+    {
+        var mySeries = rankChart.createSeries(ChartView.SeriesTypeBar, "ranking", xCountry, yValuesLast);
+        fileio.setBarSeries(mySeries)
+//        console.log("bar series added")
+//        var mySeries = rankChart.createSeries(ChartView.SeriesTypeHorizontalBar)
+//        //fileio.setBarSeries(mySeries)
+//        var categoryAxisY=Qt.createQmlObject('import QtCharts 2.2;BarCategoryAxis {}',rankChart);
+////        var seriesValue = []
+////        categoryAxisY.categories = ["2007", "2008", "2009", "2010", "2011", "2012" ]
+////        categoryAxisY.categories = fileio.countries_ordered
+
+//        fileio.setBarSeries(mySeries,categoryAxisY)
+//        mySeries.axisY = categoryAxisY
+//        //mySeries.BarSet = {"commands"; [1,2,3,4,5,6,7,8,9,10]}
+//        var mBarSet = mySeries.append("commands", [1,2,3,4,5,6,7,8,9,10])
+////        console.log(fileio.countries_ordered)
+////        var mBarSet = mySeries.append("commands", fileio.dataCountriesPresent_ordered)
+//       //BarSet { label: "Bob"; values: [2, 2, 3, 4, 5, 6] }
+//        rankChart.axisX(mySeries).min= 0 //Math.min.apply(null, mBarSet.values)
+//        rankChart.axisX(mySeries).max= 10 //Math.max.apply(null, mBarSet.values)
+    }
+
     function removeSeries()
     {
         mainChart.removeAllSeries()

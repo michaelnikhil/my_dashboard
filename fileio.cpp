@@ -1,5 +1,6 @@
 #include "fileio.h"
-#include <QtCharts/QChartView>
+#include <QtCharts/QBarSet>
+#include<QtCharts/QBarCategoryAxis>
 #include<list>
 using namespace std;
 
@@ -130,6 +131,15 @@ void FileIO::setLineSeries(QLineSeries *lineSeries)
     }
 }
 
+void FileIO::setBarSeries(QBarSeries *barSeries)
+{
+    for (int i = 0; i < 9; i++) {
+        QBarSet *set = new QBarSet(m_countries_ordered[i]);
+        *set << m_dataCountriesPresent_ordered[i];
+        barSeries->append(set);
+    }
+}
+
 void FileIO::getDataCountries(QString aCountry)
 {
     if(m_source.isEmpty()) {
@@ -219,15 +229,24 @@ void FileIO::getDataCountriesPresent()
     //sort list
     QVector<int> sortedIndex = sortArr(m_dataCountriesPresent,m_dataCountriesPresent.size());
 
-    QVector<QString> countries_ordered(m_countries.size());
+    QStringList countries_ordered;
     QVector<int> dataCountriesPresent_ordered(m_countries.size());
 
     for (int i=0; i<m_countries.size();i++) {
-        countries_ordered[i] = m_countries[sortedIndex[i]];
+        countries_ordered.append(m_countries[sortedIndex[i]]);
         dataCountriesPresent_ordered[i] = dataCountriesPresent[sortedIndex[i]];
     }
     m_countries_ordered=countries_ordered;
-    m_dataCountriesPresent_ordered=dataCountriesPresent;
+    m_dataCountriesPresent_ordered=dataCountriesPresent_ordered;
+
+//    for (int i=0; i<m_countries.size();i++) {
+//        QTextStream(stdout) << m_countries_ordered[i] << "  " << m_dataCountriesPresent_ordered[i]
+//                                                <<  endl;
+//    }
+
+    if (m_countries_ordered.size() > 0) {
+        emit countries_orderedLoaded();
+        emit dataCountriesPresent_orderedLoaded();}
     file.close();
 }
 
