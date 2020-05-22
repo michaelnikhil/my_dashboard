@@ -222,9 +222,9 @@ void FileIO::getDataCountriesPresent()
     }
 
     m_dataCountriesPresent = dataCountriesPresent;
-
     if (m_countries.size() > 0) {
-        emit countriesLoaded();}
+        emit countriesLoaded();
+        }
 
     //sort list
     QVector<int> sortedIndex = sortArr(m_dataCountriesPresent,m_dataCountriesPresent.size());
@@ -243,10 +243,12 @@ void FileIO::getDataCountriesPresent()
 //        QTextStream(stdout) << m_countries_ordered[i] << "  " << m_dataCountriesPresent_ordered[i]
 //                                                <<  endl;
 //    }
+    m_bMax = m_dataCountriesPresent_ordered[0];
 
     if (m_countries_ordered.size() > 0) {
         emit countries_orderedLoaded();
-        emit dataCountriesPresent_orderedLoaded();}
+        emit dataCountriesPresent_orderedLoaded();
+        emit bMaxChanged();}
     file.close();
 }
 

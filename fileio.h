@@ -24,6 +24,7 @@ class FileIO : public QObject
     Q_PROPERTY(QStringList countries_ordered READ get_countries_ordered NOTIFY countries_orderedLoaded  )
     Q_PROPERTY(QVector<int> dataCountriesPresent_ordered READ get_dataCountriesPresent_ordered NOTIFY dataCountriesPresent_orderedLoaded  )
     Q_PROPERTY(double yMax READ get_yMax NOTIFY yMaxChanged)
+    Q_PROPERTY(int bMax READ get_bMax NOTIFY bMaxChanged)
     Q_PROPERTY(QDateTime dMax READ get_dMax NOTIFY dMaxChanged)
 public:
     FileIO(QObject *parent = 0);
@@ -41,6 +42,7 @@ public:
     QVector<int> m_dataCountriesPresent_ordered;
     QList<QObject*> m_countries2;
     double get_yMax() const {return m_yMax;}
+    int get_bMax() const {return m_bMax;}
     QDateTime get_dMax() const {return m_dMax;}
     QDateTime m_dMax = QDateTime::fromString("2020/1/1", "yyyy/M/d");
     QVector<int> sortArr(QVector<int> arr, int n);
@@ -65,6 +67,7 @@ signals:
     void countries_orderedLoaded();
     void dataCountriesPresent_orderedLoaded();
     void yMaxChanged();
+    void bMaxChanged();
     void dMaxChanged();
 
 private:
@@ -75,7 +78,7 @@ private:
     QVector<double> m_dataCountry;
     QVector<int> m_dataCountriesPresent;
     double m_yMax=0;
-
+    int m_bMax=0;
 };
 
 #endif // FILEIO_H

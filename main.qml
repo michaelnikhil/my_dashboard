@@ -1,11 +1,11 @@
-import QtQuick 2.12
+import QtQuick 2.0
 import QtQuick.Controls 2.2
 import QtQuick.Window 2.1
 import "."
 import QtCharts 2.0
 import QtQuick.Dialogs 1.1
 import QtQuick.Layouts 1.3
-import Qt.labs.qmlmodels 1.0
+//import Qt.labs.qmlmodels 1.0
 
 Window {
     visible: true
@@ -163,7 +163,7 @@ Window {
                         ValueAxis{
                             id: yValuesLast
                             min:0
-                            max:80000
+                            max:fileio.bMax
                         }
 
 
